@@ -40,7 +40,7 @@ python profile_sliding_window_maximum.py file     # 含临时文件读入
 
 ### `测试数据/` 目录
 
-存放供手动运行主程序使用的示例 `.txt` 文件（如 `classic.txt`、`small.txt` 等），便于演示与验收。
+存放供手动运行主程序使用的示例 `.txt` 文件（如 `classic.txt`、`small.txt` 等）。
 
 ### `unittest` 与 `profile` 无需手动准备数据文件
 
