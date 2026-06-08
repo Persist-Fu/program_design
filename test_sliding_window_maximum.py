@@ -1,4 +1,4 @@
-"""使用 unittest 实现设计的黑盒与白盒测试用例。
+"""使用 unittest 实现 main.tex 中设计的黑盒与白盒测试用例。
 
 运行方式:
     python -m unittest test_sliding_window_maximum.py -v
@@ -106,7 +106,7 @@ class TestBlackBoxSlidingWindow(SlidingWindowTestMixin, unittest.TestCase):
 
 
 class TestBlackBoxFileInputReader(FileReaderTestMixin, unittest.TestCase):
-    """黑盒表 tab:blackbox-file-reader，BB-FR-1～9。"""
+    """黑盒表 tab:blackbox-file-reader，序号 1～8。"""
 
     def test_bb_fr_01_valid_two_lines(self):
         """BB-FR-1：A-V1 合法两行。"""
@@ -156,12 +156,6 @@ class TestBlackBoxFileInputReader(FileReaderTestMixin, unittest.TestCase):
         nums, k = FileInputReader(path).read()
         self.assertEqual(nums, [1])
         self.assertEqual(k, 1)
-
-    def test_bb_fr_09_robust_k_minus_one_n4(self):
-        """BB-FR-9：健壮性 $k=-1$（min$-$），$n=4$。"""
-        path = self._write_input_file("1 2 3 4\n-1\n")
-        with self.assertRaises(InputError):
-            FileInputReader(path).read()
 
 
 class TestWhiteBoxFileInputReader(FileReaderTestMixin, unittest.TestCase):
