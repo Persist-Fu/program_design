@@ -1,4 +1,4 @@
-"""使用 unittest 实现 main.tex 中设计的黑盒与白盒测试用例。
+"""使用 unittest 实现设计的黑盒与白盒测试用例。
 
 运行方式:
     python -m unittest test_sliding_window_maximum.py -v
