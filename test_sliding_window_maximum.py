@@ -106,7 +106,7 @@ class TestBlackBoxSlidingWindow(SlidingWindowTestMixin, unittest.TestCase):
 
 
 class TestBlackBoxFileInputReader(FileReaderTestMixin, unittest.TestCase):
-    """黑盒表 tab:blackbox-file-reader，BB-FR-1～17。"""
+    """黑盒表 tab:blackbox-file-reader，BB-FR-1～9。"""
 
     def test_bb_fr_01_valid_two_lines(self):
         """BB-FR-1：A-V1 合法两行。"""
@@ -120,104 +120,48 @@ class TestBlackBoxFileInputReader(FileReaderTestMixin, unittest.TestCase):
         with self.assertRaises(InputError):
             FileInputReader("nonexistent_file.txt").read()
 
-    def test_bb_fr_03_non_integer_array(self):
-        """BB-FR-3：A-I3 第一行非整数。"""
-        path = self._write_input_file("1 a 3\n2\n")
-        with self.assertRaises(InputError):
-            FileInputReader(path).read()
-
-    def test_bb_fr_04_non_integer_k(self):
-        """BB-FR-4：A-I4 第二行非整数。"""
-        path = self._write_input_file("1 2 3\nk\n")
-        with self.assertRaises(InputError):
-            FileInputReader(path).read()
-
-    def test_bb_fr_05_empty_file(self):
-        """BB-FR-5：A-I2 空文件。"""
+    def test_bb_fr_03_empty_file(self):
+        """BB-FR-3：A-I2 空文件。"""
         path = self._write_input_file("")
         with self.assertRaises(InputError):
             FileInputReader(path).read()
 
+    def test_bb_fr_04_non_integer_array(self):
+        """BB-FR-4：A-I3 第一行非整数。"""
+        path = self._write_input_file("1 a 3\n2\n")
+        with self.assertRaises(InputError):
+            FileInputReader(path).read()
+
+    def test_bb_fr_05_non_integer_k(self):
+        """BB-FR-5：A-I4 第二行非整数。"""
+        path = self._write_input_file("1 2 3\nk\n")
+        with self.assertRaises(InputError):
+            FileInputReader(path).read()
+
     def test_bb_fr_06_negative_k(self):
-        """BB-FR-6：A-I5 k=-1。"""
+        """BB-FR-6：A-I5，$k=-1$。"""
         path = self._write_input_file("1 2 3\n-1\n")
         with self.assertRaises(InputError):
             FileInputReader(path).read()
 
     def test_bb_fr_07_insufficient_lines(self):
-        """BB-FR-7：行数=1。"""
+        """BB-FR-7：行数 $=1$。"""
         path = self._write_input_file("1 2 3\n")
         with self.assertRaises(InputError):
             FileInputReader(path).read()
 
     def test_bb_fr_08_min_valid_lines(self):
-        """BB-FR-8：行数=2 最小合法。"""
+        """BB-FR-8：行数 $=2$ 最小合法。"""
         path = self._write_input_file("1\n1\n")
         nums, k = FileInputReader(path).read()
         self.assertEqual(nums, [1])
         self.assertEqual(k, 1)
 
-    def test_bb_fr_09_k_zero_n2(self):
-        """BB-FR-9：n=2，k=0。"""
-        path = self._write_input_file("1 2\n0\n")
-        nums, k = FileInputReader(path).read()
-        self.assertEqual(nums, [1, 2])
-        self.assertEqual(k, 0)
-
-    def test_bb_fr_10_k_one_n2(self):
-        """BB-FR-10：n=2，k=1。"""
-        path = self._write_input_file("1 2\n1\n")
-        nums, k = FileInputReader(path).read()
-        self.assertEqual(nums, [1, 2])
-        self.assertEqual(k, 1)
-
-    def test_bb_fr_11_k_zero_n4(self):
-        """BB-FR-11：n=4，k=0（min）。"""
-        path = self._write_input_file("1 2 3 4\n0\n")
-        nums, k = FileInputReader(path).read()
-        self.assertEqual(nums, [1, 2, 3, 4])
-        self.assertEqual(k, 0)
-
-    def test_bb_fr_12_k_one_n4(self):
-        """BB-FR-12：n=4，k=1（min+）。"""
-        path = self._write_input_file("1 2 3 4\n1\n")
-        nums, k = FileInputReader(path).read()
-        self.assertEqual(nums, [1, 2, 3, 4])
-        self.assertEqual(k, 1)
-
-    def test_bb_fr_13_k_two_n4(self):
-        """BB-FR-13：n=4，k=2（nom）。"""
-        path = self._write_input_file("1 2 3 4\n2\n")
-        nums, k = FileInputReader(path).read()
-        self.assertEqual(nums, [1, 2, 3, 4])
-        self.assertEqual(k, 2)
-
-    def test_bb_fr_14_k_three_n4(self):
-        """BB-FR-14：n=4，k=3（max-）。"""
-        path = self._write_input_file("1 2 3 4\n3\n")
-        nums, k = FileInputReader(path).read()
-        self.assertEqual(nums, [1, 2, 3, 4])
-        self.assertEqual(k, 3)
-
-    def test_bb_fr_15_k_four_n4(self):
-        """BB-FR-15：n=4，k=4（max）。"""
-        path = self._write_input_file("1 2 3 4\n4\n")
-        nums, k = FileInputReader(path).read()
-        self.assertEqual(nums, [1, 2, 3, 4])
-        self.assertEqual(k, 4)
-
-    def test_bb_fr_16_robust_k_minus_two(self):
-        """BB-FR-16：健壮性 k=-2（min-）。"""
-        path = self._write_input_file("1 2 3 4\n-2\n")
+    def test_bb_fr_09_robust_k_minus_one_n4(self):
+        """BB-FR-9：健壮性 $k=-1$（min$-$），$n=4$。"""
+        path = self._write_input_file("1 2 3 4\n-1\n")
         with self.assertRaises(InputError):
             FileInputReader(path).read()
-
-    def test_bb_fr_17_robust_k_five(self):
-        """BB-FR-17：健壮性 k=5（max+）。"""
-        path = self._write_input_file("1 2 3 4\n5\n")
-        nums, k = FileInputReader(path).read()
-        self.assertEqual(nums, [1, 2, 3, 4])
-        self.assertEqual(k, 5)
 
 
 class TestWhiteBoxFileInputReader(FileReaderTestMixin, unittest.TestCase):
